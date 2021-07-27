@@ -1,152 +1,73 @@
-const fs = require("fs");
-const data = require("../data.json");
-const { age, date, graduation } = require("../utils");
+const {
+  age,
+  date
+} = require("../../lib/utils");
+const db = require("../../config/db")
 
-exports.index = function (req, res) {
-  const teachers = data.teachers.map(function(teacher){
-     return {
-       ...teacher,
-       services: teacher.services.split(",")
-     }
-      
-  })
 
-  // console.log(teachers)
+module.exports = {
+  index(req, res) {
 
-  return res.render("teachers/index", {teachers});
-},
+    return res.render("teachers/index")
+  },
+  create(req, res) {
+    return res.render("teachers/create")
 
-exports.create =  function (req, res) {
-  return res.render("teachers/create");
-},
+  },
+  post(req, res) {
+    const keys = Object.keys(req.body)
 
-//post
-exports.post = function (req, res) {
-  const keys = Object.keys(req.body);
-
-  for (key of keys) {
-    //req.body.key ==""
-    if (req.body[key] == "") {
-      return res.send("Please, fill all fields");
+    for (key of keys) {
+      if (req.body[key] == "") {
+        return res.send("Please, fill all fields!")
+      }
     }
-  }
 
-  let { avatar_url, name, birth, education, typeofclass, services } = req.body;
+    const query = `
+          INSERT INTO teachers (
+            avatar_url,
+            name,
+            birth_date,
+            education_level,
+            class_type,
+            subjects_taught,
+            created_at
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+          RETURNING id
+      `
 
-  birth = Date.parse(birth);
-  const created_at = Date.now();
-  const id = Number(data.teachers.length + 1);
+    const values = [
+      req.body.name,
+      req.body.avatar_url,
+      req.body.gender,
+      req.body.services,
+      date(req.body.birth).iso,
+      date(Date.now()).iso,
+    ]
 
-  data.teachers.push({
-    id,
-    avatar_url,
-    name,
-    birth,
-    typeofclass,
-    education,
-    services,
-    created_at,
-  });
+    db.query(query, values, function (err, results) {
+      console.log(err)
+      console.log(results)
+      return
+    })
+  },
+  show(req, res) {
+    return
+  },
+  edit(req, res) {
+    return
+  },
+  put(req, res) {
+    const keys = Object.keys(req.body)
 
-  fs.writeFile("data.json", JSON.stringify(data, null, 2), function (err) {
-    if (err) return res.send("White file error!");
-
-    return res.redirect("/teachers");
-  });
-
-  //   return res.send(req.body);
-};
-
-//show
-exports.show = function (req, res) {
-  //req.params
-  const { id } = req.params;
-
-  const foundTeacher = data.teachers.find(function (teacher) {
-    return teacher.id == id;
-  });
-
-  if (!foundTeacher) return res.send("Teacher not found");
-
-  const teacher = {
-    ...foundTeacher,
-    age: age(foundTeacher.birth),
-    services: foundTeacher.services.split(","),
-    created_at: new Intl.DateTimeFormat("pt-BR").format(
-      foundTeacher.created_at
-     ),
-  };
-
-  return res.render("teachers/show", { teacher });
-};
-
-//Edit
-exports.edit = function (req, res) {
-  const { id } = req.params;
-
-  const foundTeacher = data.teachers.find(function (teacher) {
-    return teacher.id == id;
-  });
-
-  if (!foundTeacher) return res.send("Teacher not found");
-
-  const teacher = {
-    ...foundTeacher,
-    birth: date(foundTeacher.birth).iso
-    // education: graduation(foundTeacher.education),
-  };
-
-  return res.render("teachers/edit", { teacher });
-};
-
-//put
-exports.put = function (req, res) {
-  const { id } = req.body;
-  let index = 0;
-
-  const foundTeacher = data.teachers.find(function (teacher, foundIndex) {
-    // return teacher.id == id;
-    if (id == teacher.id) {
-      index = foundIndex;
-      return true;
+    for (key of keys) {
+      if (req.body[key] == "") {
+        return res.send("Please, fill all fields!")
+      }
     }
-  });
-
-  if (!foundTeacher) return res.send("Teacher not found");
-
-  const teacher = {
-    ...foundTeacher,
-    ...req.body,
-    birth: Date.parse(req.body.birth),
-    id: Number(req.body.id)
-  };
-
-  data.teachers[index] = teacher;
-
-  fs.writeFile("data.json", JSON.stringify(data, null, 2), function (err) {
-    if (err) return res.send("White file error!");
-
-    return res.redirect(`/teachers/${id}`);
-
-    console.log(`/teachers/${id}`);
-  });
-};
-
-//delete
-exports.delete =  function(req, res) {
-  const {id} = req.body 
-  
-  const filteredTeachers = data.teachers.filter(function(teacher){
-    return teacher.id != id
-  })
-
-  data.teachers = filteredTeachers
-
-  fs.writeFile("data.json", JSON.stringify(data, null, 2), function(err) {
-    if(err) return res.send("write file error!")
-
-    return res.redirect("/teachers")
-    // console.log(`/teachers/${id}`);
-
-  })
+    return
+  },
+  delete(req, res) {
+    return
+  },
 }
