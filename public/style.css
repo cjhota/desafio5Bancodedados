@@ -102,13 +102,18 @@ header {
 
 /* Details */
 
+.avatar {
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
 .details {
   padding: 20px;
 }
 
 .details .item {
   border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-  padding: 10px 0;
+  padding: 14px 0;
 }
 
 .details .item:last-child {
@@ -123,8 +128,14 @@ header {
   letter-spacing: 0.7px;
   font-weight: normal;
 }
-
+/* 
 .details .item:last-child(2) {
+  color: #555;
+  font-weight: bold;
+  font-size: 18px;
+} */
+
+.details .item div:nth-child(2) {
   color: #555;
   font-weight: bold;
   font-size: 18px;
@@ -186,7 +197,7 @@ a.button {
   box-sizing: border-box;
   text-align: center;
   text-decoration: none;
-  margin-top: 0;
+  /* margin-top: 0; */
   margin-bottom: 0;
 }
 
