@@ -21,7 +21,7 @@ html {
       rgb(4, 92, 173) 100%) !important;
   background-repeat: no-repeat;
   background-size: auto;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 header {
