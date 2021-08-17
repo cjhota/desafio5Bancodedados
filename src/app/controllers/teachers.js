@@ -32,9 +32,8 @@ module.exports = {
       if(!teacher) return res.send("Teacher not found")
 
       teacher.age = age(teacher.birth_date)
-      teacher.subjects_taught = teacher.subjects_taught.split(",")
       teacher.education_level = graduation(teacher.education_level)
-      // teacher.class_type = modalidad(teacher.class_type)
+      teacher.subjects_taught = teacher.subjects_taught.split(",")
       teacher.created_at = date(teacher.created_at).format
       return res.render('teachers/show', { teacher })
     })
@@ -43,7 +42,8 @@ module.exports = {
     Teacher.find(req.params.id, function(teacher) {
       if(!teacher) return res.send("Teacher not found")
 
-      teacher.birth =  date(teacher.birth).iso
+      teacher.birth_date = date(teacher.birth_date).iso
+
 
       return res.render("teachers/edit", {teacher})
 
