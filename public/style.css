@@ -12,15 +12,10 @@
   font-family: "Roboto", sans-serif;
 }
 
-body {
+html {
   /* background: linear-gradient(-242grad, #0183ff, #018dffb0, #45b3fe); */
   /* background: linear-gradient(-242grad, red, green, yellow, blue); */
-  background-image: linear-gradient(-242grad,
-      /* rgb(0, 0, 0) 20%, */
-      rgb(1, 33, 63) 0%,
-      rgb(4, 92, 173) 100%) !important;
-  background-repeat: no-repeat;
-  background-size: cover;
+  
   height: 100vh;
 }
 
@@ -30,6 +25,10 @@ header {
   padding: 20px;
   text-align: center;
   box-sizing: border-box;
+}
+
+footer {
+  margin-top: 20px;
 }
 
 .links {
@@ -76,8 +75,9 @@ header {
   background-color: white;
   width: 800px;
   min-height: 400px;
-  margin: 30px auto;
-
+  margin: 25px auto;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
   display: grid;
   /* grid-template-columns: repeat(2,1fr); */
   grid-template-columns: 40% 60%;
@@ -105,10 +105,11 @@ header {
 .avatar {
   background-repeat: no-repeat !important;
   background-size: cover !important;
+  box-sizing: border-box;
 }
 
 .details {
-  padding: 20px;
+  padding: 10px;
 }
 
 .details .item {

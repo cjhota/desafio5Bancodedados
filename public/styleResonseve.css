@@ -1,0 +1,29 @@
+@media screen and (min-width: 1500px) {
+        .details {
+        padding: 20px;
+      }
+    
+}
+
+@media screen and (max-width: 1499px)  {
+ 
+ 
+.details .item {
+    padding: 0 1rem;
+}
+/* 
+.details h3, .details .item div:nth-child(1) {
+  line-height:24px;
+}
+
+button[type="submit"], a.button {
+  margin-top: 22px;
+
+}
+
+input, select {
+  font-size: 1rem;
+
+} */
+
+}
