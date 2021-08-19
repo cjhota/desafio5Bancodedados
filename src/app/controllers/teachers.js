@@ -5,7 +5,14 @@ module.exports = {
   index(req, res) {
 
   Teacher.all(function(teachers) {
+    teachers.map(teacher => {
+      return teacher.subjects_taught = teacher.subjects_taught.split(",")
+    })
+
+    // console.log(teachers)
     return res.render("teachers/index", {teachers})
+
+    
   })
 
   },
@@ -57,7 +64,7 @@ module.exports = {
         return res.send("Please, fill all fields!")
       }
     }
-    Teacher.update(req.body,function() {
+    Teacher.update(req.body, function() {
       return res.redirect(`/teachers/${ req.body.id }`)
     })
   },

@@ -57,11 +57,10 @@ module.exports = {
             education_level=($4),
             class_type=($5),
             subjects_taught=($6)
-        WHERE id = $6
+        WHERE id = $7
         `
 
         const values = [
-            ...data,
             data.avatar_url,
             data.name,
             date(data.birth_date).iso,
