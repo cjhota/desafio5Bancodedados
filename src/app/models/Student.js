@@ -4,7 +4,10 @@ const { date } = require("../lib/utils")
 
 module.exports = {
     all(callback) {
-        db.query(`SELECT * FROM students ORDER BY name ASC`, function (err, results) {
+        db.query(`
+        SELECT * FROM students 
+        ORDER BY name ASC`, 
+        function (err, results) {
             if(err) throw `Database Error! ${err}`
 
             callback(results.rows)
@@ -19,11 +22,10 @@ module.exports = {
             birth,
             education,
             hoursperweek,
-            teacher_id
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+            teacher_id) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING id
     `
-
         const values = [
             data.avatar_url,
             data.name,
@@ -41,7 +43,8 @@ module.exports = {
         })
     },
     find(id, callback) {
-        db.query(`SELECT students.*, teachers.name AS teacher_name
+        db.query(`
+        SELECT students.*, teachers.name AS teacher_name
         FROM students 
         LEFT JOIN teachers ON (students.teacher_id = teachers.id)
         WHERE students.id = $1`, [id], function(err, results) {
@@ -88,7 +91,7 @@ module.exports = {
 
         })
     },
-    studentSelectOptions(callback) {
+    teacherSelectOption(callback) {
         db.query(`SELECT name, id FROM teachers`, function(err, results) {
             if(err) throw `Database Error! ${err}`
 

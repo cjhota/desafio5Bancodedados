@@ -27,7 +27,7 @@ module.exports = {
         }
 
         Student.create(req.body, function(student) {
-            return res.redirect(`/students/${student.id}`)
+            return res.redirect(`/students/${student}`)
         })
        
     },
@@ -35,7 +35,9 @@ module.exports = {
         Student.find(req.params.id, function(student) {
             if(!student) return res.send("Student not found!")
 
-            student.birth = date(student.birth).birthDay
+            student.age = age(student.birth)
+            student.birth = date(student.birth).format
+            student.education = grade(student.education)
 
             return res.render("students/show", { student })
 
@@ -44,7 +46,6 @@ module.exports = {
     edit(req, res) {
         Student.find(req.params.id, function(student) {
             if(!student) return res.send("Student not found!")
-
             student.birth = date(student.birth).iso
            
         Student.teacherSelectOptions(function(options) {
@@ -61,12 +62,12 @@ module.exports = {
                 return res.send("Please, fill all fields!")
             }
         }
-        Student.update(req.body, function() {
+        Student.update(req.body, function(student) {
             return res.redirect(`/students/${req.body.id}`)
         })
     },
     delete(req, res) {
-        Student.delete(req.body.id, function() {
+        Student.delete(req.body.id, function(student) {
             return res.redirect(`/students`)
         })
     },
