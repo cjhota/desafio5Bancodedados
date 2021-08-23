@@ -1,74 +1,73 @@
-const {
-  age,
-  date
-} = require("../lib/utils");
-const db = require("../../config/db")
+const { age,date } = require("../lib/utils")
+const Student =  require("../models/Student")
 
 
 module.exports = {
-  index(req, res) {
+    index(req, res) {
+    
+      Student.all(function(students) {
+            return res.render("students/index", { students })
+        })
 
-    return res.render("students/index")
-  },
-  create(req, res) {
-    return res.render("students/create")
+    },
+    create(req, res) {
 
-  },
-  post(req, res) {
-    const keys = Object.keys(req.body)
+      Student.teacherSelectOptions(function(options) {
+            return res.render("students/create", {teacherOptions: options})
+        })
 
-    for (key of keys) {
-      if (req.body[key] == "") {
-        return res.send("Please, fill all fields!")
-      }
-    }
+    },
+    post(req, res) {
+        const keys = Object.keys(req.body)
 
-    const query = `
-          INSERT INTO students (
-            avatar_url,
-            name,
-            birth_date,
-            education_level,
-            class_type,
-            subjects_taught,
-            created_at
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7)
-          RETURNING id
-      `
+        for (key of keys) {
+            if (req.body[key] == "") {
+                return res.send("Please, fill all fields!")
+            }
+        }
 
-    const values = [
-      req.body.avatar_url,
-      req.body.name,
-      date(req.body.birth).iso,
-      req.body.education_level,
-      req.body.class_type,
-      req.body.subjects_taught,
-      date(Date.now()).iso,
-    ]
+        Student.create(req.body, function(student) {
+            return res.redirect(`/students/${student.id}`)
+        })
+       
+    },
+    show(req, res) {
+        Student.find(req.params.id, function(student) {
+            if(!student) return res.send("Student not found!")
 
-    db.query(query, values, function (err, results) {
-      console.log(err)
-      console.log(results)
-      return
-    })
-  },
-  show(req, res) {
-    return
-  },
-  edit(req, res) {
-    return
-  },
-  put(req, res) {
-    const keys = Object.keys(req.body)
+            student.birth = date(student.birth).birthDay
 
-    for (key of keys) {
-      if (req.body[key] == "") {
-        return res.send("Please, fill all fields!")
-      }
-    }
-    return
-  },
-  delete(req, res) {
-    return
-  },
+            return res.render("students/show", { student })
+
+        })
+    },
+    edit(req, res) {
+        Student.find(req.params.id, function(student) {
+            if(!student) return res.send("Student not found!")
+
+            student.birth = date(student.birth).iso
+           
+        Student.teacherSelectOptions(function(options) {
+            return res.render("students/edit", {student, teacherOptions: options})
+        })
+
+        })
+    },
+    put(req, res) {
+        const keys = Object.keys(req.body)
+
+        for (key of keys) {
+            if (req.body[key] == "") {
+                return res.send("Please, fill all fields!")
+            }
+        }
+        Student.update(req.body, function() {
+            return res.redirect(`/students/${req.body.id}`)
+        })
+    },
+    delete(req, res) {
+        Student.delete(req.body.id, function() {
+            return res.redirect(`/students`)
+        })
+    },
 }
