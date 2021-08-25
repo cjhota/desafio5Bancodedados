@@ -25,8 +25,8 @@
     <div>Ano escolar</div>
     <div>
         <select name="education">
-            <option selected value="">
-                {{ student.education }}
+            <option selected value={{ student.education}}>
+                
             </option>
             <option value="5EF" {% if student.education== "5EF" %} selected {% endif %}>
                 5° Ano do Fundamental
@@ -58,14 +58,14 @@
 <div class="item">
     <div>Carga horária semanal</div>
     <div>
-        <input type="number" name="hoursperweek" placeholder="1 Hora por Semana" value="{{ student.hoursweek }} ">
+        <input type="number" name="hoursperweek" placeholder="1 hora por Semana" value="{{ student.hoursperweek }} horas">
     </div>
 </div>
 <div class="item">
-    <div>teacher</div>
+    <div>Teacher</div>
     <div>
         <select name="teacher">
-            {% for teacher in teacherSelectOptions %}
+            {% for teacher in teacherOptions %}
             <option value="{{teacher.id}}" {% if student.teacher_id == teacher.id %} selected {% endif %}>
                 {{teacher.name}}
             </option>

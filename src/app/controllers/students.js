@@ -12,7 +12,7 @@ module.exports = {
     },
     create(req, res) {
 
-      Student.teacherSelectOptions(function(options) {
+      Student.teachersSelectOptions(function(options) {
             return res.render("students/create", {teacherOptions: options})
         })
 
@@ -37,7 +37,7 @@ module.exports = {
 
             student.age = age(student.birth)
             student.birth = date(student.birth).format
-            student.education = grade(student.education)
+            // student.education = grade(student.education)
 
             return res.render("students/show", { student })
 
@@ -48,7 +48,7 @@ module.exports = {
             if(!student) return res.send("Student not found!")
             student.birth = date(student.birth).iso
            
-        Student.teacherSelectOptions(function(options) {
+        Student.teachersSelectOptions(function(options) {
             return res.render("students/edit", {student, teacherOptions: options})
         })
 
