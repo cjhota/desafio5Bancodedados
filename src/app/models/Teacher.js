@@ -57,11 +57,11 @@ module.exports = {
     findBy(filter, callback){
         //se remover o portecentagem o filtro ficá líteral já com ele incica que ele aceita a instrução antes ou depois ou ambos quando agrupado.
        db.query(`
-       SELECT teachers.*, count(students) AS total_students
+       SELECT teachers.*, count(students) AS total_students 
        FROM teachers 
-       LEFT JOIN students ON (students.teacher_id =  teachers.id) 
+       LEFT JOIN students ON (students.teacher_id = teachers.id) 
        WHERE teachers.name ILIKE '%${filter}%'
-       OR teachers.services ILIKE '%${filter}%'
+       OR teachers.subjects_taught ILIKE '%${filter}%'
        GROUP BY teachers.id
        ORDER BY total_students DESC
        `, function (err, results) {

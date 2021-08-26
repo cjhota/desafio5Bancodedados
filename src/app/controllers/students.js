@@ -35,7 +35,6 @@ module.exports = {
         Student.find(req.params.id, function(student) {
             if(!student) return res.send("Student not found!")
 
-            student.age = age(student.birth)
             student.birth = date(student.birth).format
             // student.education = grade(student.education)
 
@@ -47,6 +46,7 @@ module.exports = {
         Student.find(req.params.id, function(student) {
             if(!student) return res.send("Student not found!")
             student.birth = date(student.birth).iso
+           
            
         Student.teachersSelectOptions(function(options) {
             return res.render("students/edit", {student, teacherOptions: options})

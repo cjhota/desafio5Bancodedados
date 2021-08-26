@@ -4,7 +4,11 @@
     <div class="header">
         <a class="button" href="/teachers/create">Novo</a>
         <form action="/teachers" method="GET">
-            <input type="text" name="filter" placeholder="Nome ou Atendimento" value="{{filter}}">
+            <input 
+            type="text" 
+            name="filter" 
+            placeholder="Nome ou Atendimento" 
+            value="{{filter}}">
             <button type="submit">Filtrar</button>
         </form>
     </div>
@@ -28,7 +32,7 @@
                     <span class="services">{{ subjects_taught }}</span>
                     {% endfor %}
                 </td>
-                <td>{{instructor.total_students}}</td>
+                <td>{{teacher.total_students}}</td>
 
                 <td>
                     <a href="/teachers/{{ teacher.id }}">Ver</a>

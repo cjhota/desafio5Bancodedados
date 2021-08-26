@@ -18,9 +18,9 @@ body {
       rgb(0, 0, 0) 0%,
       #01213f 50%,
       #045cad 100%) !important;*/
-   /* background-repeat: no-repeat; */
+   background-repeat: no-repeat;
   /* background-size: cover; */
-  height: 120vh;
+  height: 130vh;
 } 
 
 header {
@@ -135,12 +135,12 @@ footer {
   letter-spacing: 0.7px;
   font-weight: normal;
 }
-/* 
+
 .details .item:last-child(2) {
   color: #555;
   font-weight: bold;
   font-size: 18px;
-} */
+}
 
 .details .item div:nth-child(2) {
   color: #555;
@@ -231,6 +231,8 @@ a.button {
 tbody,
 td,
 th {
+  color: #777;
+  font-weight: 500;
   padding: 11px;
   box-sizing: border-box;
   border-bottom: 1px solid #d9d9d9;
@@ -252,6 +254,7 @@ th {
   text-transform: uppercase;
   color: #777;
   font-size: 14px;
+  font-weight: bold;
 }
 
 tbody tr td:first-child {
