@@ -4,11 +4,13 @@ const {
   graduation,
   grade
 } = require("../lib/utils");
+const Student = require("../models/Student");
 const Teacher = require("../models/Teacher")
 
 module.exports = {
   index(req, res) {
 
+  
     let {
       filter,
       page,
@@ -25,37 +27,20 @@ module.exports = {
       limit,
       offset,
       callback(teachers) {
+          const pagination = {
+              total: Math.ceil(teachers[0].total / limit),
+              page
+          }
           teachers.map(teacher => {
-              return teacher.subjects_taught = teacher.subjects_taught.split(",")
-          })
-          return res.render("teachers/index", {
-              teachers,
-              filter
-          })
+                      return teacher.subjects_taught = teacher.subjects_taught.split(",")
+              })
+          return res.render("teachers/index", {teachers, pagination, filter})
+
       }
 
   }
 
   Teacher.paginate(params)
-
-
-    // if (filter) {
-    //     Teacher.findBy(filter, function(teachers) {
-    //         
-    //                 console.log(teachers)
-    //     })
-
-    // } else {
-    //     Teacher.all(function(teachers) {
-    //         teachers.map(teacher => {
-    //                     return teacher.subjects_taught = teacher.subjects_taught.split(",")
-    //                 })
-    //                 return res.render("teachers/index", {
-    //                     teachers
-    //                 })
-    //                 console.log(teachers)
-    //     })
-    // }
 
   },
   create(req, res) {

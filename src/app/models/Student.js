@@ -31,8 +31,8 @@ module.exports = {
             data.name,
             data.email,
             date(data.birth).iso,
-            date.education,
-            date.hoursperweek,
+            data.education,
+            data.hoursperweek,
             data.teacher
         ]
 
@@ -62,7 +62,7 @@ module.exports = {
             birth=($4),
             education=($5),
             hoursperweek=($6),
-            teacher_id($7)
+            teacher_id=($7)
         WHERE id = $8       
         `
 
@@ -91,11 +91,51 @@ module.exports = {
 
         })
     },
-    teachersSelectOptions(callback) {
+    studentsSelectOptions(callback) {
         db.query(`SELECT name, id FROM teachers`, function(err, results) {
             if(err) throw `Database Error! ${err}`
 
             return callback(results.rows)
         })
+    },
+    paginate(params) {
+        const {
+            filter,
+            limit,
+            offset,
+            callback
+        } = params
+
+        let query = "",
+            filterQuery = "",
+            totalQuery = `(
+                SELECT count(*) FROM students
+            ) AS total`
+
+        if (filter) {
+            filterQuery = `
+            WHERE students.name ILIKE '%${filter}%'
+            OR students.email ILIKE '%${filter}%'
+            `
+
+            totalQuery = `(
+                SELECT count(*) FROM students
+                ${filterQuery}
+            ) as total`
+        }
+
+        query = `
+        SELECT students.*,${totalQuery}
+        FROM students
+        ${filterQuery}
+        LIMIT $1 OFFSET $2
+        `
+
+        db.query(query, [limit, offset], function (err, results) {
+            if (err) throw `Database Error! ${err}`
+
+            callback(results.rows)
+        })
+
     }
 }
