@@ -1,4 +1,4 @@
-const { age,date } = require("../lib/utils")
+const { age,date,grade,graduation } = require("../lib/utils")
 const Student =  require("../models/Student")
 
 
@@ -25,7 +25,10 @@ module.exports = {
                     total: Math.ceil(students[0].total / limit),
                     page
                 }
-               
+                students.map(student => {
+                    student.education = grade(student.education)
+                    return student
+                  })
                 return res.render("students/index", {students, pagination, filter})
 
             }
@@ -61,7 +64,7 @@ module.exports = {
             if(!student) return res.send("Student not found!")
 
             student.birth = date(student.birth).format
-            // student.education = grade(student.education)
+            student.education = grade(student.education)
 
             return res.render("students/show", { student })
 
